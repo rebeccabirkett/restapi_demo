@@ -1,8 +1,30 @@
 require("./db/connection");
-const express = require("express")
+const express = require("express");
+const {
+    userRouter
+} = require("./routes/users");
+const {
+    postRouter
+} = require("./routes/posts");
 
-const app = express()
+const port = process.env.PORT || 5000;
+// init instance of express
+const app = express();
 
-app.listen(5000, () => {
-    console.log("Listening on port 5000")
+// middleware
+app.use(express.json());
+
+app.use(userRouter);
+app.use(postRouter);
+
+// routes/endpoints
+app.get("/health", (req, res) => {
+    res.send({
+        message: "API is working correctly"
+    });
+});
+
+// server
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });
